@@ -3,23 +3,15 @@ body {
     font-family: sans-serif;
 }
 
-.spacer {
-    width: 1px;
-    background: red;
-    flex-shrink: 0;
-}
-.scroll {
+.scroller {
     display: flex;
     overflow-x: hidden;
 }
-.scroll-inside {
+.scroller-inside {
     margin-left: 0;
     display: flex;
 }
-.scroll::-webkit-scrollbar {
-    height: 0;
-}
-.list-el {
+.scroller-el {
     border: 1px solid #ddd;
     display: flex;
     justify-content: center;
@@ -29,7 +21,7 @@ body {
     margin-right: 5px;
     box-sizing: border-box;
 }
-.list-el img {
+.scroller-el img {
     flex-shrink: 0;
     max-width: 90%;
     max-height: 90%;
@@ -37,7 +29,7 @@ body {
 }
 
 @media (max-width: 600px) {
-    .list-el {
+    .scroller-el {
         height: 80px;
         width: 150px;
     }
