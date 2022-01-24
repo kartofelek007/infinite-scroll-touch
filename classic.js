@@ -2,6 +2,7 @@ function Scroller(selector, options) {
     this.scroller = document.querySelector(selector);
     this.options = Object.assign({}, {
         scrollSpeed : 2,
+        touchSpeedBoost : 8,
         scrollBreaker : 0.6
     }, options);
 
@@ -74,7 +75,7 @@ Scroller.prototype.bindTouch = function() {
     this.scroller.addEventListener('touchend', function(e) {
         this.touchendX = e.changedTouches[0].screenX
         this.timeEnd = e.timeStamp
-        this.touchSpeed = Math.abs((this.touchendX - this.touchstartX) / (this.timeEnd - this.timeStart)) * 6
+        this.touchSpeed = Math.abs((this.touchendX - this.touchstartX) / (this.timeEnd - this.timeStart)) * this.options.touchSpeedBoost
         this.handleGesture()
     }.bind(this))
 }

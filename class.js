@@ -4,6 +4,7 @@ class Scroller {
         this.options = {
             ...{
                 scrollSpeed : 2,
+                touchSpeedBoost : 8,
                 scrollBreaker : 0.6
             },
             ...options
@@ -75,7 +76,7 @@ class Scroller {
         this.scroller.addEventListener('touchend', e => {
             this.touchendX = e.changedTouches[0].screenX
             this.timeEnd = e.timeStamp
-            this.touchSpeed = Math.abs((this.touchendX - this.touchstartX) / (this.timeEnd - this.timeStart)) * 6
+            this.touchSpeed = Math.abs((this.touchendX - this.touchstartX) / (this.timeEnd - this.timeStart)) * this.options.touchSpeedBoost
             this.handleGesture()
         })
     }
