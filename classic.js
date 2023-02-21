@@ -3,7 +3,8 @@ function Scroller(selector, options) {
     this.options = Object.assign({}, {
         scrollSpeed : 2,
         touchSpeedBoost : 8,
-        scrollBreaker : 0.6
+        scrollBreaker : 0.6,
+        pauseOnMouseEnter : false
     }, options);
 
     this.scrollSpeed = this.options.scrollSpeed
@@ -23,6 +24,7 @@ function Scroller(selector, options) {
     this.timeStart = 0
     this.timeEnd = 0
     this.touchSpeed = 0
+    this.pause = false
 
     this.bindTouch();
     this.scroll();
@@ -49,7 +51,11 @@ Scroller.prototype.scroll = function() {
     this.touchSpeed -= this.options.scrollBreaker;
     this.touchSpeed = Math.max(0, this.touchSpeed);
 
-    this.scrollSpeed = this.options.scrollSpeed + this.touchSpeed;
+    if (this.pause) {
+        this.scrollSpeed = 0;
+    } else {
+        this.scrollSpeed = this.options.scrollSpeed + this.touchSpeed;
+    }
 
     const translate = this.getTranslateX(this.scrollerInside) - this.scrollSpeed;
     this.scrollerInside.style.transform = "translateX(" + translate + "px)";
@@ -57,6 +63,7 @@ Scroller.prototype.scroll = function() {
     if (Math.abs(translate) > Math.abs(this.elWidth)) {
         this.scrollerInside.style.transform = "translate(0)";
         this.scrollerInside.append(this.scrollerInside.firstElementChild);
+        this.elWidth = this.getWidth(this.scrollerInside.firstElementChild);
     }
 
     requestAnimationFrame(e => this.scroll());
@@ -78,6 +85,16 @@ Scroller.prototype.bindTouch = function() {
         this.touchSpeed = Math.abs((this.touchendX - this.touchstartX) / (this.timeEnd - this.timeStart)) * this.options.touchSpeedBoost
         this.handleGesture()
     }.bind(this))
+
+    if (this.options.pauseOnMouseEnter) {
+        this.scroller.addEventListener("mouseenter", function(e) {
+            this.pause = true;
+        }.bind(this))
+
+        this.scroller.addEventListener("mouseleave", function(e) {
+            this.pause = false;
+        }.bind(this))
+    }
 }
 
 const scrollerA = new Scroller("#a", {scrollSpeed: 4});

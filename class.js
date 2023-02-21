@@ -1,11 +1,13 @@
-class Scroller {
+//https://github.com/kartofelek007/infinite-scroll-touch
+export class Scroller {
     constructor(selector, options = {}) {
         this.scroller = document.querySelector(selector);
         this.options = {
             ...{
                 scrollSpeed : 2,
                 touchSpeedBoost : 8,
-                scrollBreaker : 0.6
+                scrollBreaker : 0.6,
+                pauseOnMouseEnter : false
             },
             ...options
         }
@@ -24,8 +26,9 @@ class Scroller {
         this.timeStart = 0
         this.timeEnd = 0
         this.touchSpeed = 0
+        this.pause = false
 
-        this.bindTouch();
+        this.bindEvents();
         this.scroll()
     }
 
@@ -50,7 +53,11 @@ class Scroller {
         this.touchSpeed -= this.options.scrollBreaker;
         this.touchSpeed = Math.max(0, this.touchSpeed);
 
-        this.scrollSpeed = this.options.scrollSpeed + this.touchSpeed;
+        if (this.pause) {
+            this.scrollSpeed = 0;
+        } else {
+            this.scrollSpeed = this.options.scrollSpeed + this.touchSpeed;
+        }
 
         const translate = this.getTranslateX(this.scrollerInside) - this.scrollSpeed;
         this.scrollerInside.style.transform = "translateX(" + translate + "px)";
@@ -58,6 +65,7 @@ class Scroller {
         if (Math.abs(translate) > Math.abs(this.elWidth)) {
             this.scrollerInside.style.transform = "translate(0)";
             this.scrollerInside.append(this.scrollerInside.firstElementChild);
+            this.elWidth = this.getWidth(this.scrollerInside.firstElementChild);
         }
 
         requestAnimationFrame(e => this.scroll());
@@ -67,7 +75,7 @@ class Scroller {
         if (this.touchSpeed > 0) this.scrollSpeed = this.options.scrollSpeed + this.touchSpeed;
     }
 
-    bindTouch() {
+    bindEvents() {
         this.scroller.addEventListener('touchstart', e => {
             this.touchstartX = e.changedTouches[0].screenX
             this.timeStart = e.timeStamp
@@ -79,8 +87,15 @@ class Scroller {
             this.touchSpeed = Math.abs((this.touchendX - this.touchstartX) / (this.timeEnd - this.timeStart)) * this.options.touchSpeedBoost
             this.handleGesture()
         })
+
+        if (this.options.pauseOnMouseEnter) {
+            this.scroller.addEventListener("mouseenter", e => {
+                this.pause = true;
+            })
+
+            this.scroller.addEventListener("mouseleave", e => {
+                this.pause = false;
+            })
+        }
     }
 }
-
-const scrollerA = new Scroller("#a", {scrollSpeed: 4});
-const scrollerB = new Scroller("#b", {scrollBreaker : 1});
