@@ -1,19 +1,32 @@
-//https://github.com/kartofelek007/infinite-scroll-touch
-export class Scroller {
-    constructor(selector, options = {}) {
-        this.scroller = document.querySelector(selector);
+/**
+ * klasa przesuwająca elementy z prawa na lewo
+ * stosowana np. na belce partnerów na górze strony
+ */
+class Scroller {
+    constructor(element, options = {}) {
+        if (!element) return;
+        this.scroller = element;
+        this.scroller.classList.add("scroller-active");
         this.options = {
             ...{
                 scrollSpeed : 2,
                 touchSpeedBoost : 8,
-                scrollBreaker : 0.6,
-                pauseOnMouseEnter : false
+                scrollBreaker : 0.6
             },
             ...options
         }
 
-        this.scrollSpeed = this.options.scrollSpeed
+        this.scrollPos = 0;
+        this.scrollSpeed = this.options.scrollSpeed;
+        this.scrollTemp = this.scrollSpeed;
         this.scrollerInside = this.scroller.firstElementChild;
+
+        //clone children
+        const children = [...this.scrollerInside.children];
+
+        for (let i=0; i<5; i++) {
+            children.forEach(el => this.scrollerInside.append(el.cloneNode(true)))
+        }
 
         const el = this.scrollerInside.firstElementChild;
         this.elWidth = this.getWidth(el);
@@ -26,44 +39,32 @@ export class Scroller {
         this.timeStart = 0
         this.timeEnd = 0
         this.touchSpeed = 0
-        this.pause = false
 
-        this.bindEvents();
-        this.scroll()
+        this.bindTouch();
+        this.bindMouse();
+        this.scroll();
     }
 
     getWidth(element) {
-        let style = element.currentStyle || window.getComputedStyle(element),
-        width = element.offsetWidth, // or use style.width
-        margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight),
-        padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight),
-        border = parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
-        let result = width + margin - padding;
-        if (style.boxSizing === "content-box") result += border;
-        return result;
-    }
-
-    getTranslateX(element) {
-        const style = window.getComputedStyle(element);
-        const matrix = new WebKitCSSMatrix(style.transform);
-        return matrix.m41;
+        let width = element.getBoundingClientRect().width;
+        let style = window.getComputedStyle(element);
+        let margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+        return width + margin;
     }
 
     scroll() {
         this.touchSpeed -= this.options.scrollBreaker;
         this.touchSpeed = Math.max(0, this.touchSpeed);
 
-        if (this.pause) {
-            this.scrollSpeed = 0;
-        } else {
-            this.scrollSpeed = this.options.scrollSpeed + this.touchSpeed;
-        }
+        this.scrollSpeed = this.scrollTemp + this.touchSpeed;
 
-        const translate = this.getTranslateX(this.scrollerInside) - this.scrollSpeed;
+        const translate = this.scrollPos - this.scrollSpeed;
+        this.scrollPos = translate;
         this.scrollerInside.style.transform = "translateX(" + translate + "px)";
 
         if (Math.abs(translate) > Math.abs(this.elWidth)) {
             this.scrollerInside.style.transform = "translate(0)";
+            this.scrollPos = 0;
             this.scrollerInside.append(this.scrollerInside.firstElementChild);
             this.elWidth = this.getWidth(this.scrollerInside.firstElementChild);
         }
@@ -75,7 +76,19 @@ export class Scroller {
         if (this.touchSpeed > 0) this.scrollSpeed = this.options.scrollSpeed + this.touchSpeed;
     }
 
-    bindEvents() {
+    bindMouse() {
+        this.scroller.addEventListener("mouseenter", () => {
+            this.scrollTemp = 0;
+            this.scrollSpeed = 0;
+        })
+
+        this.scroller.addEventListener("mouseleave", () => {
+            this.scrollSpeed = this.options.scrollSpeed;
+            this.scrollTemp = this.options.scrollSpeed;
+        })
+    }
+
+    bindTouch() {
         this.scroller.addEventListener('touchstart', e => {
             this.touchstartX = e.changedTouches[0].screenX
             this.timeStart = e.timeStamp
@@ -87,15 +100,6 @@ export class Scroller {
             this.touchSpeed = Math.abs((this.touchendX - this.touchstartX) / (this.timeEnd - this.timeStart)) * this.options.touchSpeedBoost
             this.handleGesture()
         })
-
-        if (this.options.pauseOnMouseEnter) {
-            this.scroller.addEventListener("mouseenter", e => {
-                this.pause = true;
-            })
-
-            this.scroller.addEventListener("mouseleave", e => {
-                this.pause = false;
-            })
-        }
     }
 }
+

@@ -13,15 +13,14 @@
 	<div class="scroller" id="a">
 		<div class="scroller-inside">
 			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=1&bg=red" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=2&bg=blue" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=3&bg=cyan" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=4&bg=gold" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=5&bg=crimson" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=6&bg=dodgerblue" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/150x100?text=2&bg=blue" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/100x100?text=3&bg=cyan" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/90x100?text=4&bg=gold" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/120x100?text=5&bg=crimson" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/160x100?text=6&bg=dodgerblue" alt=""></div>
 			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=7&bg=gray" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=8&bg=black" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=9&bg=pink" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=10&bg=orange" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/180x100?text=8&bg=black" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/100x100?text=9&bg=pink" alt=""></div>
 		</div>
 	</div>
 
@@ -30,18 +29,46 @@
 	<div class="scroller" id="b">
 		<div class="scroller-inside">
 			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=1&bg=red" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=2&bg=blue" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=3&bg=cyan" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=4&bg=gold" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=5&bg=crimson" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=6&bg=dodgerblue" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/150x100?text=2&bg=blue" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/100x100?text=3&bg=cyan" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/90x100?text=4&bg=gold" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/120x100?text=5&bg=crimson" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/160x100?text=6&bg=dodgerblue" alt=""></div>
 			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=7&bg=gray" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=8&bg=black" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=9&bg=pink" alt=""></div>
-			<div class="scroller-el"><img src="https://pokaimg.me/200x100?text=10&bg=orange" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/180x100?text=8&bg=black" alt=""></div>
+			<div class="scroller-el"><img src="https://pokaimg.me/100x100?text=9&bg=pink" alt=""></div>
 		</div>
 	</div>
 
-	<script src="classic.js"></script>
+	<br><br>
+
+	<div class="scroller-text" id="c">
+		<div class="scroller-text-inside">
+			<div class="scroller-text-el">Alias earum rem sint soluta?</div>
+			<div class="scroller-text-el">Commodi cum eligendi iure officia!</div>
+			<div class="scroller-text-el">Assumenda consequuntur dolorem in suscipit!</div>
+			<div class="scroller-text-el">Illum omnis quia quidem tempora.</div>
+			<div class="scroller-text-el">Aliquam laboriosam quasi ratione sapiente.</div>
+			<div class="scroller-text-el">Eius eligendi harum perferendis quae.</div>
+			<div class="scroller-text-el">Beatae doloremque excepturi molestiae quibusdam.</div>
+			<div class="scroller-text-el">At aut dignissimos odio quisquam?</div>
+		</div>
+	</div>
+
+	<script src="class.js"></script>
+	<script>
+		{
+			const el = document.querySelector("#a")
+			new Scroller(el, {scrollSpeed: 4});
+		}
+		{
+			const el = document.querySelector("#b")
+			new Scroller(el, {scrollSpeed : 1, scrollBreaker : 0.3});
+		}
+		{
+			const el = document.querySelector("#c")
+			new Scroller(el, {scrollSpeed: 2});
+		}
+	</script>
 </body>
 </html>

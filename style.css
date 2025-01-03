@@ -17,20 +17,33 @@ body {
     justify-content: center;
     align-items: center;
     height: 100px;
-    width: 250px;
+    min-width: 150px;
     margin-right: 5px;
     box-sizing: border-box;
+    padding: 5px;
 }
 .scroller-el img {
-    flex-shrink: 0;
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
+    height: 90%;
 }
 
-@media (max-width: 600px) {
-    .scroller-el {
-        height: 80px;
-        width: 150px;
-    }
+/* scroller text */
+.scroller-text {
+    display: flex;
+    overflow-x: hidden;
+}
+.scroller-text-inside {
+    margin-left: 0;
+    display: flex;
+}
+.scroller-text-el {
+    padding: 2px 10px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-right: 10px;
+    border-radius: 4px;
+    background: #eee;
+    white-space: nowrap;
+    font-family: sans-serif;
 }
